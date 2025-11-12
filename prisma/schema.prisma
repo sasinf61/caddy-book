@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum UserRole {
+  GOLFER
+  CADDY
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum CaddyTier {
+  A
+  B
+  C
+}
+
+enum CaddyStatus {
+  AVAILABLE
+  ON_DUTY
+  OFF_DUTY
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+// Models
+model User {
+  id                 String         @id @default(cuid())
+  username           String         @unique
+  email              String         @unique
+  phone              String?        @unique
+  password           String?
+  googleId           String?        @unique
+  facebookId         String?        @unique
+  role               UserRole       @default(GOLFER)
+  isEmailVerified    Boolean        @default(false)
+  verificationToken  String?        @unique
+  
+  // Golfer-specific fields
+  handicap     Float?         // แฮนดิแคป
+  playingStyle String?        // สไตล์การเล่น (e.g., "เล่นจริงจัง")
+  
+  // Relations
+  bookings         Booking[]
+  caddyProfile     CaddyProfile?
+  favoriteCaddies  FavoriteCaddy[] // แคดดี้คนโปรด
+  reviewsGiven     Review[]        // รีวิวที่ Golfer เขียน
+}
+
+model CaddyProfile {
+  id              String       @id @default(cuid())
+  slug            String       @unique
+  tier            CaddyTier
+  status          CaddyStatus
+  age             Int?
+  gender          Gender?
+  description     String?
+  profileImageUrl String?
+  profileViews    Int          @default(0)
+  
+  // At-a-Glance fields
+  caddyIdNumber   String?      @unique // รหัสแคดดี้
+  isVerified      Boolean      @default(false) // สถานะการยืนยันตัวตน
+  totalRounds     Int          @default(0) // จำนวนครั้งที่ออกรอบ
+  homeCourses     String[]     // สนามกอล์ฟประจำ
+  
+  // About fields
+  experienceYears Int?         // ประสบการณ์ (ปี)
+  languages       String[]     // ภาษาที่สื่อสารได้
+  
+  // Skills fields (Tags)
+  specialties     String[]     // ทักษะพิเศษ
+  certifications  String[]     // ใบรับรอง
+  
+  // Relations
+  userId          String       @unique
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings        Booking[]
+  favoritedBy     FavoriteCaddy[] // ถูก Golfer กด Favorite
+  reviewsReceived Review[]        // รีวิวที่ Caddy ได้รับ
+}
+
+model Booking {
+  id             String        @id @default(cuid())
+  startTime      DateTime
+  endTime        DateTime
+  status         BookingStatus
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  caddyProfileId String
+  caddyProfile   CaddyProfile  @relation(fields: [caddyProfileId], references: [id], onDelete: Restrict)
+
+  @@index([caddyProfileId, startTime, endTime])
+}
+
+model Review {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  rating         Int          // (e.g., 1 to 5 stars)
+  comment        String?      //
+
+  author         User         @relation(fields: [authorId], references: [id])
+  authorId       String
+
+  caddyProfile   CaddyProfile @relation(fields: [caddyProfileId], references: [id])
+  caddyProfileId String
+}
+
+model FavoriteCaddy {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+
+  caddyProfile   CaddyProfile @relation(fields: [caddyProfileId], references: [id])
+  caddyProfileId String
+
+  @@unique([userId, caddyProfileId]) // Prevent duplicate favorites
+}

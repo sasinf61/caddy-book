@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/k/caddy-booking-app/src/app/profile/page.tsx"],"sourcesContent":["export default function ProfilePage() {\n  return (\n    <main className=\"flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50\">\n      <h1 className=\"text-3xl font-bold text-gray-900 mb-6\">หน้าโปรไฟล์</h1>\n      <p className=\"text-lg text-gray-600\">สมัครสมาชิกสำเร็จ! (นี่คือหน้าโปรไฟล์ของคุณ)</p>\n      {/* Logout button and user data will be added here later */}\n    </main>\n  );\n}\n\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,yQAAC;QAAK,WAAU;;0BACd,yQAAC;gBAAG,WAAU;0BAAwC;;;;;;0BACtD,yQAAC;gBAAE,WAAU;0BAAwB;;;;;;;;;;;;AAI3C","debugId":null}}]
+}

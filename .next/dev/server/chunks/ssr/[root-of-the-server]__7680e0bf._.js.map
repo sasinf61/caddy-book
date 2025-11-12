@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/k/caddy-booking-app/src/app/bookings/page.tsx"],"sourcesContent":["import Link from 'next/link';\n\nexport default function BookingsPage() {\n  return (\n    <main className=\"flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50\">\n      <h1 className=\"text-3xl font-bold text-gray-900 mb-6\">การจองของฉัน</h1>\n      <p className=\"text-lg text-gray-600 mb-8\">(หน้านี้กำลังอยู่ระหว่างการพัฒนา...)</p>\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAEe,SAAS;IACtB,qBACE,yQAAC;QAAK,WAAU;;0BACd,yQAAC;gBAAG,WAAU;0BAAwC;;;;;;0BACtD,yQAAC;gBAAE,WAAU;0BAA6B;;;;;;;;;;;;AAGhD","debugId":null}}]
+}

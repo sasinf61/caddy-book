@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/bookings/page": "app/bookings/page.js",
+  "/caddies/[slug]/page": "app/caddies/[slug]/page.js",
+  "/caddies/page": "app/caddies/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/register/caddy-signup/page": "app/register/caddy-signup/page.js",
+  "/register/golfer-signup/page": "app/register/golfer-signup/page.js",
+  "/register/page": "app/register/page.js",
+  "/register/verify/page": "app/register/verify/page.js"
+}
