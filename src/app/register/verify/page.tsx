@@ -103,11 +103,11 @@ function VerifyAndCompleteForm() {
                      className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                      placeholder="Confirm Password" />
             </div>
-            {/* Input field: Phone (Optional) */}
+            {/* Input field: Phone */}
             <div className="relative">
               <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
                      className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                     placeholder="Phone (Optional)" />
+                     placeholder="เบอร์โทรศัพท์ (ถ้าต้องการเปลี่ยน)" />
             </div>
             {/* Submit Button */}
             <button type="submit" disabled={isLoading} className="w-full py-3 px-4 font-semibold text-gray-900 bg-white rounded-lg hover:bg-gray-200 transition-colors duration-300 disabled:opacity-50">

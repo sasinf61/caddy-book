@@ -3,22 +3,9 @@ globalThis.__BUILD_MANIFEST = {
     "/_app": []
   },
   "devFiles": [],
-  "polyfillFiles": [
-    "static/chunks/2481b_next_dist_build_polyfills_polyfill-nomodule.js"
-  ],
+  "polyfillFiles": [],
   "lowPriorityFiles": [],
-  "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_b332ab7d._.js",
-    "static/chunks/2481b_next_dist_compiled_react-dom_928d9023._.js",
-    "static/chunks/2481b_next_dist_compiled_react-server-dom-turbopack_b536148c._.js",
-    "static/chunks/2481b_next_dist_compiled_next-devtools_index_6c2494e4.js",
-    "static/chunks/2481b_next_dist_compiled_887bc723._.js",
-    "static/chunks/2481b_next_dist_client_93ca68d8._.js",
-    "static/chunks/2481b_next_dist_47894b36._.js",
-    "static/chunks/2481b_@swc_helpers_cjs_28cc90c0._.js",
-    "static/chunks/caddy-booking-app_a0ff3932._.js",
-    "static/chunks/turbopack-caddy-booking-app_222116e2._.js"
-  ]
+  "rootMainFiles": []
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
 "/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",

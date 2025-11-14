@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function GolferSignupPage() {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -25,7 +26,8 @@ export default function GolferSignupPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username,
+          name,
+          phone,
           email,
           role: 'GOLFER',
         }),
@@ -56,9 +58,14 @@ export default function GolferSignupPage() {
         <form onSubmit={handleSubmit} className="form-card w-full p-8 space-y-6 bg-white/10 backdrop-blur-md rounded-lg shadow-2xl">
           <h1 className="text-3xl font-bold text-center text-white">สมัคร (นักกอล์ฟ)</h1>
           
-          {/* Input field: Username */}
+          {/* Input field: Name */}
           <div className="relative">
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Username" />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="ชื่อ-นามสกุล" />
+          </div>
+
+          {/* Input field: Phone */}
+          <div className="relative">
+            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="เบอร์โทรศัพท์" />
           </div>
 
           {/* Input field: Email */}

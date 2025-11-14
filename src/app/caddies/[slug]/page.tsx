@@ -61,7 +61,7 @@ export default async function CaddyDetailPage({ params }: { params: Promise<{ sl
           <div className="space-y-4">
             {caddy.reviewsReceived.map((review: any) => (
               <div key={review.id} className="p-4 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/10">
-                <p className="font-semibold text-white">{review.author.username}</p>
+                <p className="font-semibold text-white">{review.author.name}</p>
                 <p className="text-sm text-gray-400">{review.createdAt.toLocaleDateString()}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <div className="flex gap-1">

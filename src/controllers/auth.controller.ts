@@ -28,32 +28,47 @@ async function generateUniqueSlug(name: string): Promise<string> {
 }
 
 /**
- * Start registration - create user with username/email only (no password/phone yet)
+ * Start registration - create user with name/phone/email (no password yet)
  */
 export const registerStart = async (req: Request, res: Response) => {
   try {
     // Get data from request body
-    const { username, email, role } = req.body;
+    const { name, phone, email, role } = req.body;
     const userRole: UserRole = role === 'CADDY' ? 'CADDY' : 'GOLFER'; // Default to GOLFER
 
-    // Validation - Check if user already exists (by username OR email)
+    // Validation - Check required fields
+    if (!name || !phone || !email || !role) {
+      return res.status(400).json({ 
+        message: 'Missing required fields: name, phone, email, role' 
+      });
+    }
+
+    // Validation - Check if user already exists (by phone OR email)
     const existingUser = await prisma.user.findFirst({
-      where: { OR: [{ username }, { email }] }
+      where: { 
+        OR: [
+          { phone: phone },
+          { email: email }
+        ] 
+      }
     });
 
     if (existingUser) {
       return res.status(409).json({
-        message: 'Username or email already in use.'
+        message: existingUser.phone === phone 
+          ? 'Phone number already registered' 
+          : 'Email already registered'
       });
     }
 
-    // Create new user (no password or phone yet)
+    // Create new user (no password yet)
     const newUser = await prisma.user.create({
       data: {
-        username,
+        name,
+        phone,
         email,
         role: userRole,
-        // Password and Phone are now 'null' by default
+        // Password is now 'null' by default
       }
     });
 
@@ -64,8 +79,8 @@ export const registerStart = async (req: Request, res: Response) => {
       data: { verificationToken: token },
     });
 
-    // Create the verification URL
-    const verificationUrl = `http://localhost:3000/register/verify?token=${token}`;
+    // Create the verification URL (Deep Link for Mobile App)
+    const verificationUrl = `caddybooking://verify?token=${token}&phone=${encodeURIComponent(newUser.phone)}&email=${encodeURIComponent(newUser.email)}&name=${encodeURIComponent(newUser.name)}`;
 
     // Send the email (using Ethereal)
     const transporter = await createEtherealTransport();
@@ -84,10 +99,11 @@ export const registerStart = async (req: Request, res: Response) => {
 
     // If user is a CADDY, create an empty CaddyProfile
     if (userRole === 'CADDY') {
+      const slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + newUser.id.slice(0, 6);
       await prisma.caddyProfile.create({
         data: {
           userId: newUser.id,
-          slug: await generateUniqueSlug(newUser.username), // Use username for slug
+          slug: slug, // Generate slug from name instead of username
           tier: 'C', // Default tier
           status: 'AVAILABLE' // Default status
         }
@@ -146,19 +162,32 @@ export const logoutUser = (req: Request, res: Response) => {
 };
 
 /**
- * Login user with email and password
+ * Login user with phone/email and password
  */
 export const loginUser = async (req: Request, res: Response, next: any) => {
-  const { email, password } = req.body;
+  const { loginIdentifier, password } = req.body;
+
+  // Validation
+  if (!loginIdentifier || !password) {
+    return res.status(400).json({ message: 'Missing loginIdentifier or password' });
+  }
 
   try {
-    // a. Find the user by email
-    const user = await prisma.user.findUnique({
-      where: { email }
+    // a. Find the user by phone OR email
+    const user = await prisma.user.findFirst({
+      where: { 
+        OR: [
+          { phone: loginIdentifier },
+          { email: loginIdentifier }
+        ] 
+      },
+      include: {
+        caddyProfile: true
+      }
     });
     
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid phone/email or password' });
     }
 
     // b. Check if email is verified
@@ -168,13 +197,13 @@ export const loginUser = async (req: Request, res: Response, next: any) => {
 
     // c. Check if they have a local password
     if (!user.password) {
-      return res.status(401).json({ message: 'User registered with Social login. Please use Google.' });
+      return res.status(401).json({ message: 'Password not set. Please complete registration.' });
     }
 
     // d. Compare the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid phone/email or password' });
     }
 
     // e. Log the user in (using Passport's 'req.logIn' function)
@@ -215,12 +244,12 @@ export const registerComplete = async (req: Request, res: Response, next: any) =
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // e. (Success) Update the user: Set password, phone, verify, and remove token
+    // e. (Success) Update the user: Set password, verify, and optionally update phone
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
         password: hashedPassword,
-        phone: phone || null, // Phone is optional
+        phone: phone || user.phone, // Keep existing phone or update if provided
         isEmailVerified: true,
         verificationToken: null // (Crucial: Burn the token after use)
       }

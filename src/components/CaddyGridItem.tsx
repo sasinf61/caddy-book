@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { CaddyProfile, User } from '../../generated/prisma/client.js';
+import type { CaddyProfile, User } from '@prisma/client';
 
 interface CaddyGridItemProps {
   caddy: CaddyProfile & { user: User };
@@ -14,7 +14,7 @@ const CaddyGridItem: React.FC<CaddyGridItemProps> = ({ caddy }) => {
       <div className="overflow-hidden rounded-lg">
         <Image
           src={caddy.profileImageUrl || `https://picsum.photos/seed/${caddy.userId}/400/500`}
-          alt={caddy.user.username || 'Caddy Profile'}
+          alt={caddy.user.name || 'Caddy Profile'}
           width={400}
           height={500}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -25,7 +25,7 @@ const CaddyGridItem: React.FC<CaddyGridItemProps> = ({ caddy }) => {
       <div className="pt-2">
         {/* Caddy Name */}
         <h3 className="font-semibold text-sm text-white">
-          {caddy.user.username}
+          {caddy.user.name}
         </h3>
 
         {/* Caddy Age */}

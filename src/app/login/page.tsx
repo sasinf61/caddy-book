@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [loginIdentifier, setLoginIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function LoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', // Include cookies in cross-origin requests
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ loginIdentifier, password }),
       });
 
       const data = await response.json();
@@ -45,15 +45,15 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="form-card w-full max-w-sm p-8 space-y-6 bg-white/10 backdrop-blur-md rounded-lg shadow-2xl">
         <h2 className="text-3xl font-bold text-center text-white">Login</h2>
 
-        {/* Email Input */}
+        {/* Login Identifier Input (Phone or Email) */}
         <div className="relative">
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={loginIdentifier}
+            onChange={(e) => setLoginIdentifier(e.target.value)}
             required
             className="input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Email"
+            placeholder="เบอร์โทร หรือ อีเมล"
           />
         </div>
 

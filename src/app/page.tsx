@@ -10,7 +10,7 @@ export default async function HomePage() {
       status: 'AVAILABLE' // Show only available caddies
     },
     include: {
-      user: true // Needed for CaddyGridItem (username)
+      user: true // Needed for CaddyGridItem (name)
     },
     orderBy: {
       profileViews: 'desc' // Most popular first

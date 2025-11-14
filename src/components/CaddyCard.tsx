@@ -19,7 +19,7 @@ const CaddyCard: React.FC<CaddyCardProps> = ({ caddy }) => {
       <div className="relative w-full h-48">
         <Image
           src={caddy.profileImageUrl || `https://picsum.photos/seed/${caddy.userId}/400/400`}
-          alt={caddy.user.username}
+          alt={caddy.user.name}
           fill
           className="object-cover"
         />
@@ -29,7 +29,7 @@ const CaddyCard: React.FC<CaddyCardProps> = ({ caddy }) => {
       <div className="p-4">
         {/* Caddy Name */}
         <h3 className="font-bold text-xl text-white mb-2">
-          {caddy.user.username}
+          {caddy.user.name}
         </h3>
 
         {/* Age and Gender */}

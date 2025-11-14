@@ -82,8 +82,12 @@ app.get('/api/auth/google/callback',
 );
 
 // Controllers will be imported here
+import golfCourseRoutes from "./routes/golfCourseRoutes";
+app.use("/api/golf-courses", golfCourseRoutes);
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Golf Course routes

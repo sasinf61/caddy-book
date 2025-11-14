@@ -174,7 +174,7 @@ function VerifyAndCompleteForm() {
                                 value: phone,
                                 onChange: (e)=>setPhone(e.target.value),
                                 className: "input-field w-full px-4 py-3 text-white bg-black/30 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
-                                placeholder: "Phone (Optional)"
+                                placeholder: "เบอร์โทรศัพท์ (ถ้าต้องการเปลี่ยน)"
                             }, void 0, false, {
                                 fileName: "[project]/caddy-booking-app/src/app/register/verify/page.tsx",
                                 lineNumber: 108,

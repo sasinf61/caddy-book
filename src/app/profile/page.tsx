@@ -35,8 +35,8 @@ type CaddyProfile = {
 
 type User = {
   id: string;
-  username: string;
-  phone: string | null;
+  name: string;
+  phone: string;
   email: string;
   password: string | null;
   googleId: string | null;
@@ -60,7 +60,7 @@ function CaddyProfileView({ user, profile }: { user: UserWithProfile; profile: C
   return (
     <div className="w-full max-w-2xl p-8 bg-white/10 backdrop-blur-md rounded-lg shadow-2xl border border-white/10">
       <h1 className="text-3xl font-bold text-white mb-2">โปรไฟล์แคดดี้</h1>
-      <p className="text-xl text-gray-300 mb-4">{user.username}</p>
+      <p className="text-xl text-gray-300 mb-4">{user.name}</p>
       
       {/* At-a-Glance Section */}
       <div className="border-b border-white/20 pb-4 mb-4">
@@ -90,7 +90,7 @@ function GolferProfileView({ user }: { user: UserWithProfile }) {
   return (
     <div className="w-full max-w-2xl p-8 bg-white/10 backdrop-blur-md rounded-lg shadow-2xl border border-white/10">
       <h1 className="text-3xl font-bold text-white mb-2">โปรไฟล์นักกอล์ฟ</h1>
-      <p className="text-xl text-gray-300 mb-4">{user.username}</p>
+      <p className="text-xl text-gray-300 mb-4">{user.name}</p>
       
       {/* Golfer Profile Section */}
       <div className="border-b border-white/20 pb-4 mb-4">
